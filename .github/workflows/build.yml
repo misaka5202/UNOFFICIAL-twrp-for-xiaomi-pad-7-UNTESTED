@@ -108,13 +108,36 @@ jobs:
           echo "=== Verifying prebuilts in build tree ==="
           ls -lh twrp/device/xiaomi/uke/prebuilt/
 
+      - name: Hack config.mk for Xiaomi Partitions
+        run: |
+          # 针对你的第一个报错：强行让编译系统接受 system_dlkm 和 mi_ext 分区名
+          CONFIG_MK="twrp/build/make/core/config.mk"
+          if [ ! -f "$CONFIG_MK" ]; then
+            CONFIG_MK="twrp/build/core/config.mk"
+          fi
+          if [ -f "$CONFIG_MK" ]; then
+            echo "Hacking $CONFIG_MK to add custom partitions..."
+            sed -i 's/ \$(TARGET_COPY_OUT_ODM_DLKM)/ \$(TARGET_COPY_OUT_ODM_DLKM) system_dlkm mi_ext/g' $CONFIG_MK
+            grep -n "system_dlkm" $CONFIG_MK || true
+          else
+            echo "ERROR: config.mk not found!"
+            exit 1
+          fi
+
       - name: Build TWRP vendor_boot
         run: |
           cd twrp
           export ALLOW_MISSING_DEPENDENCIES=true
           export BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES=true
+          
+          # 针对你的第二个报错：关闭 LineageOS/Omni 编译系统的 roomservice 自动检索
+          export NOT_MEETING_ROOMSERVICE=true
+          
           . build/envsetup.sh
+          
+          # 使用原本的 lunch 命令
           lunch twrp_uke-eng
+          
           mka vendorbootimage 2>&1 | tee build.log
           echo "Build exit code: $?"
 
