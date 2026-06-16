@@ -1,0 +1,5 @@
+on boot
+    start health-hal-2-1
+
+on property:ro.crypto.state=encrypted && property:ro.crypto.type=file
+    install_keyring
