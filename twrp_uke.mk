@@ -10,6 +10,9 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
 # Virtual A/B：recovery ramdisk 加载到 vendor_boot
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/launch_with_vendor_ramdisk.mk)
 
+# vendor_boot 模式下，TWRP 资源也应随 vendor ramdisk 提供
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+
 # Inherit TWRP common config
 $(call inherit-product, vendor/twrp/config/common.mk)
 

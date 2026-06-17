@@ -34,12 +34,15 @@ PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.1-impl-mock \
     fastbootd
 
+# ---- 新增：强制包含 log 组件 ----
+PRODUCT_PACKAGES += \
+    logd \
+    logcat
+
 # Recovery fstab
-# 1. 复制到 vendor_ramdisk/first_stage_ramdisk 供第一阶段 init 挂载分区
-# 2. 复制到 recovery 内部供 TWRP 读取分区信息
+# 标准 vendor_boot 写法：仅将 first-stage fstab 放入 vendor ramdisk
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom \
-    $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/recovery.fstab
+    $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
