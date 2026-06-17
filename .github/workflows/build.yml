@@ -108,30 +108,6 @@ jobs:
           echo "=== Verifying prebuilts in build tree ==="
           ls -lh twrp/device/xiaomi/uke/prebuilt/
 
-      - name: Patch invalid dynamic partition names
-        run: |
-          # twrp-12.1's build/make/core/config.mk only accepts:
-          # system vendor product system_ext odm vendor_dlkm odm_dlkm
-          # The device tree's BoardConfig.mk lists newer partitions
-          # (system_dlkm, mi_ext) that this older build system rejects,
-          # which makes dumpvars fail and breaks lunch/device detection.
-          BOARDCFG=$(grep -rl "BOARD_XIAOMI_DYNAMIC_PARTITIONS_PARTITION_LIST" twrp/device/xiaomi/uke/ | head -n1)
-          if [ -z "$BOARDCFG" ]; then
-            echo "WARNING: could not find BOARD_XIAOMI_DYNAMIC_PARTITIONS_PARTITION_LIST, skipping patch"
-          else
-            echo "Patching $BOARDCFG"
-            echo "--- before ---"
-            grep "BOARD_XIAOMI_DYNAMIC_PARTITIONS_PARTITION_LIST" "$BOARDCFG"
-            sed -i -E '/BOARD_XIAOMI_DYNAMIC_PARTITIONS_PARTITION_LIST/{
-              s/\bsystem_dlkm\b//g
-              s/\bmi_ext\b//g
-              s/[ \t]+/ /g
-              s/ +$//
-            }' "$BOARDCFG"
-            echo "--- after ---"
-            grep "BOARD_XIAOMI_DYNAMIC_PARTITIONS_PARTITION_LIST" "$BOARDCFG"
-          fi
-
       - name: Build TWRP vendor_boot
         run: |
           cd twrp
