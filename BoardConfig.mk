@@ -65,9 +65,7 @@ BOARD_SUPER_PARTITION_GROUPS := xiaomi_dynamic_partitions
 BOARD_XIAOMI_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     system \
     system_ext \
-    system_dlkm \
     product \
-    mi_ext \
     vendor \
     vendor_dlkm \
     odm
@@ -85,9 +83,7 @@ BOARD_MI_EXTIMAGE_FILE_SYSTEM_TYPE := erofs
 
 TARGET_COPY_OUT_SYSTEM := system
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
-TARGET_COPY_OUT_SYSTEM_DLKM := system_dlkm
 TARGET_COPY_OUT_PRODUCT := product
-TARGET_COPY_OUT_MI_EXT := mi_ext
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 TARGET_COPY_OUT_ODM := odm
@@ -111,9 +107,7 @@ AB_OTA_PARTITIONS += \
     vendor_boot \
     system \
     system_ext \
-    system_dlkm \
     product \
-    mi_ext \
     vendor \
     vendor_dlkm \
     odm
