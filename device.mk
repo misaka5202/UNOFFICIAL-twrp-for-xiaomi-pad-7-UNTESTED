@@ -1,3 +1,5 @@
+LOCAL_PATH := device/xiaomi/uke
+
 # A/B
 AB_OTA_UPDATER := true
 AB_OTA_PARTITIONS += \
@@ -34,15 +36,15 @@ PRODUCT_PACKAGES += \
     android.hardware.fastboot@1.1-impl-mock \
     fastbootd
 
-# ---- 新增：强制包含 log 组件 ----
+# 强制包含 log 组件
 PRODUCT_PACKAGES += \
     logd \
     logcat
 
 # Recovery fstab
-# 标准 vendor_boot 写法：仅将 first-stage fstab 放入 vendor ramdisk
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
+    $(LOCAL_PATH)/recovery/root/system/etc/recovery.fstab:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom \
+    $(LOCAL_PATH)/recovery/root/system/etc/recovery.fstab:$(TARGET_COPY_OUT_RECOVERY)/root/system/etc/recovery.fstab
 
 # Soong namespaces
-PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
+PRODUCT_SOONG_NAMESPACES += $(LOCAL_PATH)
